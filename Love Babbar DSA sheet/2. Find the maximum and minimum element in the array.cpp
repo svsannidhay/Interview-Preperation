@@ -64,6 +64,45 @@ pair<ll,ll> solveDAC(vector<ll> &arr,ll l,ll r) {
 
 */
 
+void solveM3(vector<ll> &arr) {
+  ll min_el = MAX;
+  ll max_el = MIN;
+  if(arr.size() % 2 == 0) {
+    if(arr[0] < arr[1]) {
+      min_el = arr[0];
+      max_el = arr[1];
+    } else {
+      min_el = arr[1];
+      max_el = arr[0];
+    }
+
+    for(ll i = 2; i < arr.size(); i+=2) {
+      if(arr[i] < arr[i+1]) {
+        min_el = min(min_el,arr[i]);
+        max_el = max(max_el,arr[i+1]);
+      } else {
+        min_el = min(min_el, arr[i+1]);
+        max_el = max(max_el, arr[i]);
+      }
+    }
+
+  } else {
+    min_el = arr[0];
+    max_el = arr[0];
+    
+    for (ll i = 1; i < arr.size(); i += 2) {
+      if (arr[i] < arr[i + 1]) {
+        min_el = min(min_el, arr[i]);
+        max_el = max(max_el, arr[i + 1]);
+      } else {
+        min_el = min(min_el, arr[i + 1]);
+        max_el = max(max_el, arr[i]);
+      }
+    }
+  }
+  cout<<min_el<<" "<<max_el<<"\n";
+}
+
 int main() {
   cinll(n);
   vector<ll> arr;
@@ -75,5 +114,6 @@ int main() {
   solve(arr);
   pair<ll,ll> minmax = solveDAC(arr,0,n-1);
   cout<<minmax.first<<" "<<minmax.second<<"\n";
+  solveM3(arr);
   return 0;
 }
