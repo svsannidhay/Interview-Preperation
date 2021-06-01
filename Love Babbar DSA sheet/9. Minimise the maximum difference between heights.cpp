@@ -48,7 +48,6 @@ class Solution {
                 ans = min(ans,arr[right].second - arr[left].second);
             }
             right++;
-
         }
         return ans;
     }
