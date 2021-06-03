@@ -40,10 +40,8 @@ Traverse the array from start to end and mid is less than high. (Loop counter is
 If the element is 0 then swap the element with the element at index low and update low = low + 1 and mid = mid + 1
 If the element is 1 then update mid = mid + 1
 If the element is 2 then swap the element with the element at index high and update high = high – 1 and update i = i – 1. As the swapped element is not processed
-Print the output array.
-
 */
-class Solution {
+class Solution{
 public:
   void sort012(int a[], int n){
     int left = 0;
