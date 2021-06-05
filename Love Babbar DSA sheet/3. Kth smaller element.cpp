@@ -45,56 +45,53 @@ class Solution{
 //Method 3
 
 /*
-  Randomised quickSort
+  Randomised quickSelect
 
   https://www.cdn.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array-set-2-expected-linear-time/
 */
+struct custom_compare{
+    bool operator() (int a,int b) {
+        return a<b;
+    }
+};
+
+int partition(int a[],int l,int r) {
+    int pivot = l;
+    for(int i = l; i < r; i++) {
+        if(a[i] < a[r]) {
+            swap(a[i],a[pivot]);
+            pivot++;
+        }
+    }
+    swap(a[pivot],a[r]);
+    return pivot;
+}
+
+int selectPivot(int a[],int l,int r) {
+    int pivot = l + (rand() % (r - l + 1));
+    swap(a[pivot],a[r]);
+    return partition(a,l,r);
+}
+
+int quickSelect(int a[],int l,int r,int k) {
+    if(l <= r) {
+        int pivot = selectPivot(a,l,r);
+        if(pivot == k) {
+            // cout<<"here";
+            return a[pivot];
+        } 
+        if(k <= pivot) {
+            quickSelect(a,l,pivot-1,k);
+        } else {
+            quickSelect(a,pivot + 1,r,k);
+        }
+    }    
+}
+
 class Solution{
     public:
-
-    int partition(int arr[],int l,int r) {
-        int i = l;
-        int x = arr[r];
-        for(int j = l;j < r; j++) {
-            if(arr[j] <= x) {
-                swap(arr[j],arr[i]);
-                i++;
-            }
-        }
-        swap(arr[i],arr[r]);
-        return i;
-    }
-
-    int createPivot(int arr[],int l,int r) {
-        int n = r-l+1; 
-        int pivot = rand() % n; 
-        swap(arr[l + pivot],arr[r]);
-        return partition(arr,l,r);
-    }
-    
-    int solveRecursive(int arr[],int l,int r,int k) {
-        if (k > 0 && k <= r - l + 1) 
-        { 
-            // Partition the array around a random element and 
-            // get position of pivot element in sorted array 
-            int pos = createPivot(arr, l, r); 
-     
-            // If position is same as k 
-            if (pos-l == k-1) 
-                return arr[pos]; 
-            if (pos-l > k-1) // If position is more, recur for left subarray 
-                return solveRecursive(arr, l, pos-1, k); 
-     
-            // Else recur for right subarray 
-            return solveRecursive(arr, pos+1, r, k-pos+l-1); 
-        } 
-    }
-
     int kthSmallest(int a[], int l, int r, int k) {
-        
-        int ans = solveRecursive(a,l,r,k);
-        return ans;
+        return quickSelect(a,l,r,k-1);
     }
-
     
 };
