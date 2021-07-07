@@ -43,3 +43,18 @@ Step2: Do following for every row after the first row
 The time complexity is O(m+n) because we can possibly go as far left as we came ahead in the first step.
 
 */
+class Solution{
+public:
+	int rowWithMax1s(vector<vector<int> > arr, int n, int m) {
+        int ans = 0;
+        int idx = -1;
+        for(int i = 0; i < n; i++) {
+            while(ans + 1 <= m && arr[i][m - (ans+1)] == 1) {
+                ans++;
+                idx = i;
+            }
+        }
+        return idx;
+	}
+
+};
