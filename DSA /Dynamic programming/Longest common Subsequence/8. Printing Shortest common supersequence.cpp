@@ -56,9 +56,9 @@ string solve_dp(string a,string b) {
         for(ll j=1;j<=m;j++) {
             if(a[i-1] == b[j-1]) dp[i][j] = 1 + dp[i-1][j-1];
             else dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
-            cout<<dp[i][j]<<" ";
+            // cout<<dp[i][j]<<" ";
         }
-        cout<<"\n";
+        // cout<<"\n";
     }
 
     ll i = n;
@@ -73,14 +73,26 @@ string solve_dp(string a,string b) {
             shortest_common_superseq.pb(a[i-1]);
             i--;
             j--;
-        } else if(dp[i][j-1] > dp[i-1][j]) {
-            shortest_common_superseq.pb(b[j-1]);
-            j--;
-        } else if(dp[i-1][j] > dp[i][j-1]) {
-            shortest_common_superseq.pb(a[i-1]);
-            i--;
+        } else {
+            if(dp[i][j-1] > dp[i-1][j]) {
+                shortest_common_superseq.pb(b[j-1]);
+                j--;
+            } else if(dp[i-1][j] >= dp[i][j-1]){
+                shortest_common_superseq.pb(a[i-1]);
+                i--;
+            }
         }
     }
+
+    while(i > 0) {
+        shortest_common_superseq.pb(a[i-1]);
+        i--;
+    }
+    while(j > 0) {
+        shortest_common_superseq.pb(b[j-1]);
+        j--;
+    }
+
     reverse(lcs.begin(),lcs.end());
     reverse(shortest_common_superseq.begin(),shortest_common_superseq.end());
     return shortest_common_superseq;
