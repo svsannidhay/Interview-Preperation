@@ -21,7 +21,7 @@
  
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #define fio  ios_base::sync_with_stdio(false);cin.tie(NULL);
-#define ll  int
+#define ll  long long int
 #define ull unsigned long long int
 #define cinll(x) ll x;cin >> x;
 #define cini(x) int x;cin >> x;
@@ -44,44 +44,40 @@ using namespace std;
 using u64 = uint64_t;
 
 void addEdge(vector< ll > adj[],ll u,ll v) {
-    adj[u].push_back(v);
-    adj[v].push_back(u);
-    return;    
+  adj[u].push_back(v);
+  adj[v].push_back(u);
+  return;
 }
 
-void dfs(vector< ll > adj[],ll current,vector<bool> &visited) {
-    if(!visited[current]) {
-        visited[current] = true;
-        // cout<<current<<" ";
-        for(ll i = 0;i < adj[current].size(); i++) {
-            dfs(adj,adj[current][i],visited);
-        }
-    } 
-}
-
-ll count_connected_components(vector< ll > adj[],ll n) {
-    vector<bool> visited(n,false);
-    ll count = 0;
-    for(ll i = 1; i < n; i++) {
-        if(!visited[i]) {
-            dfs(adj,1,visited);
-            count++;
-        }
+void dfs(vector< ll > adj[],vector< bool > &visited,vector< ll > &dist,ll current,ll dis) {
+  if(!visited[current]) {
+    visited[current] = true;
+    dist[current] = dis;
+    for(ll i=0;i<adj[current].size();i++) {
+      dfs(adj,visited,dist,adj[current][i],dis + 1);
     }
-    return count;
+  }
+} 
+
+vector<ll> sssp(vector<ll> adj[], ll n,ll source) {
+  vector<ll> dist(n+1,-1);
+  dist[source] = 0;
+  vector<bool> visited(n+1,false);
+  dfs(adj,visited,dist,source,0);
+  return dist;
 }
 
 void solve() {
-    cinll(n);cinll(m);
-    vector<ll> adj[n+1];
-    for(ll i = 0;i < m;i++) {
-        cinll(u);cinll(v);
-        addEdge(adj,u,v);
-    }
-    cout<<count_connected_components(adj,n)<<"\n";
-    return;
+  cinll(n);
+  vector< ll > adj[n+1];
+  for(ll i = 0;i < n-1 ; i++) {
+    cinll(u);cinll(v);
+    addEdge(adj,u,v);
+  }
+  vector<ll> dist = sssp(adj,n,5);
+  for(auto it:dist) cout<<it<<" ";
+  return;
 }
-
 
 int main() {
     fio;
@@ -91,9 +87,9 @@ int main() {
     freopen("output.txt", "w" , stdout);
     #endif
 // ///////////////////////////////////////////
-    cinll(t);
-    for(ll i=0;i<t;i++) {
+    // cinll(t);
+    // for(ll i=0;i<t;i++) {
         solve();
-    }
+    // }
   return 0;
 }
