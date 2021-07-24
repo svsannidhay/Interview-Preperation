@@ -43,40 +43,61 @@ const ll maxN = 17;
 using namespace std;
 using u64 = uint64_t;
 
-void addEdge(vector< ll > adj[],ll u,ll v) {
-  adj[u].push_back(v);
-  adj[v].push_back(u);
-  return;
-}
-
-void dfs(vector< ll > adj[],vector< bool > &visited,vector< ll > &dist,ll current,ll dis) {
-  if(!visited[current]) {
-    visited[current] = true;
-    dist[current] = dis;
-    for(ll i=0;i<adj[current].size();i++) {
-      dfs(adj,visited,dist,adj[current][i],dis + 1);
+void dfs(vector< ll > adj[],vector<bool> &vis1,ll current,
+    ll curr_d,ll &deepest_n,ll &max_d_it1) {
+    if(!vis1[current]) {
+        vis1[current] = true;
+        if(curr_d > max_d_it1) {
+            max_d_it1 = curr_d;
+            deepest_n = current;
+        }
+        for(ll i=0;i<adj[current].size();i++) {
+            if(!vis1[adj[current][i]]) {
+                dfs(adj,vis1,adj[current][i],curr_d + 1,deepest_n,max_d_it1);
+            }
+        }
     }
-  }
-} 
-
-vector<ll> sssp(vector<ll> adj[], ll n,ll source) {
-  vector<ll> dist(n+1,-1);
-  dist[source] = 0;
-  vector<bool> visited(n+1,false);
-  dfs(adj,visited,dist,source,0);
-  return dist;
 }
+
+void dfs_deep(vector< ll > adj[],vector<bool> &vis2,ll current,ll depth,ll &max_d_it2) {
+    if(!vis2[current]) {
+        vis2[current] = true;
+        if(depth > max_d_it2) {
+            max_d_it2 = depth;
+        }
+        for(ll i=0;i<adj[current].size();i++) {
+            if(!vis2[adj[current][i]]) {
+                dfs_deep(adj,vis2,adj[current][i],depth + 1,max_d_it2);
+            }
+        }
+
+    }
+}
+
 
 void solve() {
-  cinll(n);
-  vector< ll > adj[n+1];
-  for(ll i = 0;i < n-1 ; i++) {
-    cinll(u);cinll(v);
-    addEdge(adj,u,v);
-  }
-  vector<ll> dist = sssp(adj,n,5);
-  for(auto it:dist) cout<<it<<" ";
-  return;
+    cinll(n);
+    vector< ll > adj[n+1];
+    for(ll i=0;i<n-1;i++) {
+        cinll(u);cinll(v);
+        adj[u].pb(v);
+        adj[v].pb(u);
+    }
+
+    vector<bool> vis1(n+1,false);
+    vector<bool> vis2(n+1,false);
+
+    ll deepest_n = -1;
+    ll max_d_it1 = -1;
+    ll max_d_it2 = -1;
+
+    dfs(adj,vis1,1,0,deepest_n,max_d_it1);
+
+    dfs_deep(adj,vis2,deepest_n,0,max_d_it2);
+
+    cout<<max_d_it2;
+
+    return;
 }
 
 int main() {

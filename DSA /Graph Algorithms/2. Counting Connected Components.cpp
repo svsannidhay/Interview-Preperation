@@ -44,40 +44,42 @@ using namespace std;
 using u64 = uint64_t;
 
 void addEdge(vector< ll > adj[],ll u,ll v) {
-  adj[u].push_back(v);
-  adj[v].push_back(u);
-  return;
+    adj[u].pb(v);
+    adj[v].pb(u);
+    return;
 }
 
-void dfs(vector< ll > adj[],vector< bool > &visited,vector< ll > &dist,ll current,ll dis) {
-  if(!visited[current]) {
-    visited[current] = true;
-    dist[current] = dis;
-    for(ll i=0;i<adj[current].size();i++) {
-      dfs(adj,visited,dist,adj[current][i],dis + 1);
+void dfs(vector<ll> adj[],vector<bool> &visited,ll current) {
+    if(!visited[current]) {
+        visited[current] = true;
+        for(ll i=0;i<adj[current].size();i++) {
+            dfs(adj,visited,adj[current][i]);
+        }
     }
-  }
-} 
-
-vector<ll> sssp(vector<ll> adj[], ll n,ll source) {
-  vector<ll> dist(n+1,-1);
-  dist[source] = 0;
-  vector<bool> visited(n+1,false);
-  dfs(adj,visited,dist,source,0);
-  return dist;
+    return;
 }
 
-void solve() {
-  cinll(n);
-  vector< ll > adj[n+1];
-  for(ll i = 0;i < n-1 ; i++) {
-    cinll(u);cinll(v);
-    addEdge(adj,u,v);
-  }
-  vector<ll> dist = sssp(adj,n,5);
-  for(auto it:dist) cout<<it<<" ";
-  return;
+ 
+void solve () {
+    cinll(n);
+    cinll(m);
+    vector< ll > adj[n+1];
+    for(ll i = 0;i < n; i++) {
+        cinll(u);cinll(v);
+        addEdge(adj,u,v);
+    }
+    ll count = 0;
+    vector<bool> visited(n+1,false);
+    for(ll i = 1;i<=n;i++) {
+        if(!visited[i]) {
+            dfs(adj,visited,i);
+            count++;
+        }
+    }
+    cout<<count<<"\n";
+    return;
 }
+
 
 int main() {
     fio;
