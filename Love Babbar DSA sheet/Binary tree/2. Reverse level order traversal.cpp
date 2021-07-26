@@ -1,3 +1,18 @@
+/*
+
+    Say the tree we have is 
+         1 
+      2    3 
+    4   5 
+
+    and we want the output to be 4 5 2 3 1 
+    but if we go by usual approach we will get 5 4 3 2 1 
+    what are we really missing here 
+    Its the order of nodes visited 
+    Just visit right node first and then left node you will get 4 5 2 3 1 
+
+*/
+
 vector<int> reverseLevelOrder(Node *root) {
     queue<Node *> q;
     q.push(root);
