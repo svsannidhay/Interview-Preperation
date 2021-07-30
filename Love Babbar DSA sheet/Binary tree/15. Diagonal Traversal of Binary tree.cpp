@@ -1,3 +1,10 @@
+/*
+
+  Mark the positions whenever we go left cuz we need to have levels that way 
+  now dfs works left first then right so they will automatically come in order
+
+*/
+
 void dfs(Node *root,int pos,vector<int> adj[]) {
     if(root == NULL) return;
     adj[pos].push_back(root->data);
