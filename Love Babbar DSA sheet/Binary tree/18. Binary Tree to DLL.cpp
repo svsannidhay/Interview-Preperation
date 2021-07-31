@@ -1,6 +1,6 @@
 /*
 
-  Use preorder traversal and keep the track of preveiously visited node 
+  Use inorder traversal and keep the track of preveiously visited node 
 
   Time Complexity: O(N)
   Space Complexity: O(N)
