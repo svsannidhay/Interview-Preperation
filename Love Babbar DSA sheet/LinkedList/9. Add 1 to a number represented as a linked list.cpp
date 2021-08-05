@@ -36,3 +36,47 @@ class Solution
         return head;
     }
 };
+
+/*
+
+    Reverse the linked list keep adding one till the carry is there 
+    and then reverse again and return.
+
+*/
+
+Node *rev(Node *head) {
+    Node * prev = NULL;
+    Node * curr = head;
+    while(curr != NULL) {
+        Node *next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+class Solution
+{
+    public:
+    Node* addOne(Node *head) {
+        Node * reverse_head = rev(head);
+        int carry = 1;
+        Node *move = reverse_head;
+        while(carry != 0) {
+            move->data += 1;
+            carry = move->data / 10;
+            move->data = move->data % 10;
+            if(move -> next == NULL) {
+                break;
+            }
+            move = move->next;
+        }
+        if(carry == 1) {
+            Node * one = new Node(1);
+            move->next = one;
+        }
+        Node * newhead = rev(reverse_head);
+        return newhead;
+    }
+};
