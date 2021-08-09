@@ -85,35 +85,47 @@ void display(Node * current) {
     return;
 }
 
-void findPairs(Node *head,ll x) {
-    Node * left = head;
-    Node * right = head;
-    while(right->next != NULL) right = right->next;
+ll countTriplets(Node *head,ll x) {
+    ll count = 0;
+    Node * current = head;
+    while(current != NULL) {
+      Node * left = current->next;
+      Node * right = current->next;
+      while(right != NULL && right->next != NULL) right = right->next;
 
-    while(1) {
-        ll currsum = left->data + right->data;
-        if(currsum == x) {
-            cout<<left->data<<" "<<right->data<<"\n";
-            left = left->next;
-            right = right->prev;
+      while(left != NULL && right != NULL && left != right && right->next != left) {
+        ll sum = current->data + left->data + right->data;
+        if(sum == x) {
+          count++;
+          left = left->next;
+          right = right->prev;
         } else {
-            if(currsum < x) left = left->next;
-            else {
-                right = right->prev;
-            }
+          if(sum < x) {
+            left = left->next;
+          } else {
+            right = right->prev;
+          }
         }
-        if(left == right || right->next == left) break;
+      }
+      current = current->next;
     }
+    return count;
 
 }    
 
 void solve() {
     Node *head = NULL;
-    insertBeg(&head, 3);
-    insertBeg(&head, 3);
-    insertBeg(&head, 2);
-    insertBeg(&head, 1);
-    findPairs(head, 3);
+ 
+    insertBeg(&head,9);
+    insertBeg(&head,8);
+    insertBeg(&head,6);
+    insertBeg(&head,5);
+    insertBeg(&head,4);
+    insertBeg(&head,2);
+    insertBeg(&head,1);
+
+    cout<<countTriplets(head,17);
+    
     return;
 }
 
