@@ -11,3 +11,17 @@ Node* reverseDLL(Node * head)
     }
     return previous;
 }
+
+
+Node * rev (Node *current,Node * previous) {
+    if(current == NULL) return previous;
+    Node * next = current->next;
+    current->next = previous;
+    current->prev = next;
+    return rev(next,current);
+}
+
+Node* reverseDLL(Node * head)
+{
+    return rev(head,NULL);
+}
