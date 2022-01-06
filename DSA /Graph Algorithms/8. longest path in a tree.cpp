@@ -42,64 +42,39 @@ const ll maxN = 17;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using namespace std;
 using u64 = uint64_t;
-
-void dfs(vector< ll > adj[],vector<bool> &vis1,ll current,
-    ll curr_d,ll &deepest_n,ll &max_d_it1) {
-    if(!vis1[current]) {
-        vis1[current] = true;
-        if(curr_d > max_d_it1) {
-            max_d_it1 = curr_d;
-            deepest_n = current;
-        }
-        for(ll i=0;i<adj[current].size();i++) {
-            if(!vis1[adj[current][i]]) {
-                dfs(adj,vis1,adj[current][i],curr_d + 1,deepest_n,max_d_it1);
-            }
+ 
+void dfs(vector< ll > adj[],vector<bool> &visit1,ll current ,ll &v,ll &dv,ll d) {
+    visit1[current] = true; 
+    if(d > dv) {
+        v = current;
+        dv = d;
+    }
+    for(auto i: adj[current]) {
+        if(!visit1[i]) {
+            dfs(adj,visit1,i,v,dv,d+1);
         }
     }
-}
-
-void dfs_deep(vector< ll > adj[],vector<bool> &vis2,ll current,ll depth,ll &max_d_it2) {
-    if(!vis2[current]) {
-        vis2[current] = true;
-        if(depth > max_d_it2) {
-            max_d_it2 = depth;
-        }
-        for(ll i=0;i<adj[current].size();i++) {
-            if(!vis2[adj[current][i]]) {
-                dfs_deep(adj,vis2,adj[current][i],depth + 1,max_d_it2);
-            }
-        }
-
-    }
-}
-
-
+} 
+ 
 void solve() {
     cinll(n);
     vector< ll > adj[n+1];
     for(ll i=0;i<n-1;i++) {
-        cinll(u);cinll(v);
-        adj[u].pb(v);
-        adj[v].pb(u);
+        cinll(a);cinll(b);
+        adj[a].pb(b);
+        adj[b].pb(a);
     }
-
-    vector<bool> vis1(n+1,false);
-    vector<bool> vis2(n+1,false);
-
-    ll deepest_n = -1;
-    ll max_d_it1 = -1;
-    ll max_d_it2 = -1;
-
-    dfs(adj,vis1,1,0,deepest_n,max_d_it1);
-
-    dfs_deep(adj,vis2,deepest_n,0,max_d_it2);
-
-    cout<<max_d_it2;
-
-    return;
+    ll v1 = -1;
+    ll dv1 = 0;
+    vector<bool> visit1(n+1,false);
+    dfs(adj,visit1,1,v1,dv1,0);
+    ll v2 = -1;
+    ll dv2 = 0;
+    vector<bool> visit2(n+1,false);
+    dfs(adj,visit2,v1,v2,dv2,0);
+    cout<<dv2;
 }
-
+ 
 int main() {
     fio;
 ///////////////////////////////////////////    
@@ -107,9 +82,9 @@ int main() {
     freopen("input.txt" , "r", stdin);
     freopen("output.txt", "w" , stdout);
     #endif
-// ///////////////////////////////////////////
+/////////////////////////////////////////////
     // cinll(t);
-    // for(ll i=0;i<t;i++) {
+    // for(ll i = 0;i < t; i++) {
         solve();
     // }
   return 0;
